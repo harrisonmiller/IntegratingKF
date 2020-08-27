@@ -20,23 +20,23 @@ $(document).ready(function(){
     return false;
   })
 
-  getiFrameSrc();
+  // getiFrameSrc();
 
 });
 
 // function to get the demo users token and create the url for the iframe and set it
 // username, password, server, and welcomeviewid are from config.js
-function getiFrameSrc(){
-
-  var promise = createLoginPromiseForURL(USERNAME, PASSWORD, SERVER);
-  promise.then(function(result){
-    var token = result[0].token;
-    var url = SERVER + "auth/jwt?token=" + token + "&redirectUrl=/view/" + WELCOMEVIEWID;
-    var iframe = document.getElementById("iframeDemo");
-    iframe.setAttribute("src", url);
-  })
-
-}
+// function getiFrameSrc(){
+//
+//   var promise = createLoginPromiseForURL(USERNAME, PASSWORD, SERVER);
+//   promise.then(function(result){
+//     var token = result[0].token;
+//     var url = SERVER + "auth/jwt?token=" + token + "&redirectUrl=/view/" + WELCOMEVIEWID;
+//     var iframe = document.getElementById("iframeDemo");
+//     iframe.setAttribute("src", url);
+//   })
+//
+// }
 
 
 // Creates a login promise for a server
