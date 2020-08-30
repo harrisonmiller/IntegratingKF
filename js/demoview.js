@@ -1,56 +1,17 @@
 $(document).ready(function() {
 
-  // get demo user token
-  var promise = createDemoUserTokenPromise();
-  promise.then(function(result) {
-    var token = result[0].token;
-
-    // use token to get all the links from the welcome view
-    var promise2 = getApiLinksFromViewId(token, SERVER, WELCOMEVIEWID);
-    promise2.then(function(result) {
-
-      // sort out the relevant notes
-      var extractedNotes = [];
-      for (var i = 0; i < result.length; i++) {
-        var link = result[i]._to;
-        if (link.type == "Note" && link.title != "" && link.status == "active") {
-          extractedNotes.push(result[i]);
-        }
-      }
-
-      console.log(extractedNotes);
-    });
-  });
-
+  // initialize the graph
   var cy = cytoscape({
     container: document.getElementById('cy'), // container to render in
 
-    elements: [ // list of graph elements to start with
-      { // node a
-        data: {
-          id: 'a'
-        }
-      },
-      { // node b
-        data: {
-          id: 'b'
-        }
-      },
-      { // edge ab
-        data: {
-          id: 'ab',
-          source: 'a',
-          target: 'b'
-        }
-      }
-    ],
+    elements: [],
 
     style: [ // the stylesheet for the graph
       {
         selector: 'node',
         style: {
-          'background-color': '#666',
-          'label': 'data(id)'
+          'background-color': '#6ba6d6',
+          'label': 'data(name)'
         }
       },
 
@@ -67,10 +28,51 @@ $(document).ready(function() {
     ],
 
     layout: {
-      name: 'grid',
-      rows: 1
-    }
+      name: 'grid'
+    },
+
+    minZoom: 0.75,
+    maxZoom: 2,
   });
+
+
+  // get demo user token
+  var promise = createDemoUserTokenPromise();
+  promise.then(function(result) {
+    var token = result[0].token;
+
+    // use token to get all the links from the welcome view
+    var promise2 = getApiLinksFromViewId(token, SERVER, WELCOMEVIEWID);
+    promise2.then(function(result) {
+
+      // sort out the relevant notes
+      var extractedNotes = [];
+      for (var i = 0; i < result.length; i++) {
+        var link = result[i]._to;
+        if (link.type == "Note" && link.title != "" && link.status == "active") {
+          extractedNotes.push(result[i]);
+          cy.add({
+            data: {
+              id: result[i]._id,
+              name: link.title
+            },
+            position: {
+              x: result[i].data.x,
+              y: result[i].data.y
+            }
+          });
+        }
+
+        // else if(link.type == "Attachment"){
+        //   console.log(result[i]);
+        // }
+      }
+
+      console.log(extractedNotes);
+    });
+  });
+
+
 
 });
 
@@ -120,10 +122,7 @@ function getApiLinksFromViewId(token, server, welcomeViewId) {
 }
 
 // uses serverurl/api/objects/objectId endpoint
-function getApiObjectsObjectId(server, objectId) {
-  var promise = createDemoUserTokenPromise();
-  promise.then(function(response) {
-    var token = response[0].token;
+function getApiObjectsObjectId(token, server, objectId) {
     var request = new XMLHttpRequest();
 
     request.open('GET', server + 'api/objects/' + objectId);
@@ -139,6 +138,4 @@ function getApiObjectsObjectId(server, objectId) {
     };
 
     request.send();
-
-  });
 }
