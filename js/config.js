@@ -7,7 +7,8 @@ const SERVERS = [
   {name:"Albany Stage", url:"https://kf6-stage.rit.albany.edu/"},
   {name:"IKIT", url:"https://kf6.ikit.org/"},
   {name:"Albany", url:"https://kf6.rit.albany.edu/"},
-  {name:"Singapore", url:"https://kf.rdc.nie.edu.sg/"}
+  {name:"Singapore", url:"https://kf.rdc.nie.edu.sg/"},
+  {name:"Local", url:"http://localhost:9000/"}
 ];
 
 /*
@@ -16,7 +17,8 @@ const SERVERS = [
 const USERNAME = "demo1";
 const PASSWORD = "demo1";
 const SERVER = getServerURL("IKIT Stage");
-const WELCOMEVIEWID = "558abcb01f3b621e75d9bc0a"; // PKU SUMMER SCHOOL WELCOME VIEW ID 
+const COMMUNITYID = "558abcb01f3b621e75d9bc08"    // PKU SUMMER SCHOOL COMMUNITY ID
+const WELCOMEVIEWID = "558abcb01f3b621e75d9bc0a"; // PKU SUMMER SCHOOL WELCOME VIEW ID
 
 
 // Helper function to retrieve a servers name from its URL
